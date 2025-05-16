@@ -1,10 +1,15 @@
+import { useColorScheme } from '@/hooks/useColorScheme';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
+import { RootStackParamList } from '../navigation/types';
+import login from './authentication/login';
+import VerifyOtp from './authentication/verify-otp';
 
-import { useColorScheme } from '@/hooks/useColorScheme';
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -19,11 +24,10 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-        <Stack.Screen name="authentication/login" options={{ headerShown: false }}/>
-      </Stack>
+       <Stack.Navigator>
+        <Stack.Screen name="Login" component={login} options={{ headerShown: false }} />
+        <Stack.Screen name="VerifyOtp" component={VerifyOtp} options={{ headerShown: false }} />
+      </Stack.Navigator>
       <StatusBar style="auto" />
     </ThemeProvider>
   );

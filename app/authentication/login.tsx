@@ -1,19 +1,36 @@
 // MobileNumberScreen.tsx
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Formik } from 'formik';
 import React from 'react';
 import { ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import * as Yup from 'yup';
+import { RootStackParamList } from '../../navigation/types';
+import { loginWithMobile } from '../../services/authService';
 
-const login = () => {
+type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
+
+const login: React.FC<Props> = ({ navigation }) => {
   const mobileSchema = Yup.object().shape({
     mobile: Yup.string()
       .matches(/^[6-9]\d{9}$/, 'Enter a valid 10-digit mobile number')
       .required('Mobile number is required'),
   });
 
-  const handleSubmit = (values: { mobile: string }) => {
+  const handleSubmit = async (values: { mobile: string }) => {
     console.log('Submitted mobile:', values.mobile);
     // handle navigation or API call here
+    try {
+      const payload = {
+        number: values.mobile
+      }
+      const response = await loginWithMobile(payload); // ✅ You're using it
+      console.log('Login success:', response);
+      if(response.status == 200){
+        navigation.navigate('VerifyOtp', { phoneNumber: values.mobile });
+      }
+    } catch (error) {
+      console.error('Login failed:', error);
+    }
   };
 
   return (
@@ -29,8 +46,8 @@ const login = () => {
         <Text style={styles.tagline}>Your Right to a Safe Delivery</Text>
 
         <View style={styles.titleHeader}>
-            <Text style={styles.title}>No. 1 Hospital in</Text>
-            <Text style={styles.subtitle}>Child and Women Care in India</Text>
+          <Text style={styles.title}>No. 1 Hospital in</Text>
+          <Text style={styles.subtitle}>Child and Women Care in India</Text>
         </View>
 
         <View style={styles.formContainer}>
@@ -77,6 +94,7 @@ const login = () => {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
+    overflow: 'hidden'
   },
   overlay: {
     flex: 1,
@@ -106,9 +124,9 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     color: '#555',
   },
-  titleHeader : {
-    position : 'absolute',
-    bottom : '40%'
+  titleHeader: {
+    position: 'absolute',
+    bottom: '40%'
 
   },
   title: {
