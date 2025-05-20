@@ -8,6 +8,7 @@ import 'react-native-reanimated';
 import { RootStackParamList } from '../navigation/types';
 import login from './authentication/login';
 import VerifyOtp from './authentication/verify-otp';
+import RegistrationScreen from './registration';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -27,6 +28,7 @@ export default function RootLayout() {
        <Stack.Navigator>
         <Stack.Screen name="Login" component={login} options={{ headerShown: false }} />
         <Stack.Screen name="VerifyOtp" component={VerifyOtp} options={{ headerShown: false }} />
+        <Stack.Screen name="RegistrationScreen" component={RegistrationScreen} options={{ headerShown: false }} />
       </Stack.Navigator>
       <StatusBar style="auto" />
     </ThemeProvider>
