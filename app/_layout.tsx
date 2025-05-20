@@ -8,6 +8,9 @@ import 'react-native-reanimated';
 import { RootStackParamList } from '../navigation/types';
 import login from './authentication/login';
 import VerifyOtp from './authentication/verify-otp';
+import Dashboard from './dashboard';
+import Doctors from './doctors';
+import Home from './home';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -24,9 +27,12 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-       <Stack.Navigator>
+       <Stack.Navigator initialRouteName="Login">
         <Stack.Screen name="Login" component={login} options={{ headerShown: false }} />
         <Stack.Screen name="VerifyOtp" component={VerifyOtp} options={{ headerShown: false }} />
+        <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
+         <Stack.Screen name="Doctors" component={Doctors} options={{ headerShown: false }} />
+         <Stack.Screen name="Dashboard" component={Dashboard} options={{ headerShown: false }} />
       </Stack.Navigator>
       <StatusBar style="auto" />
     </ThemeProvider>

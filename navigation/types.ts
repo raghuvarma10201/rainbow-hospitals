@@ -1,5 +1,7 @@
 export type RootStackParamList = {
     Login: undefined;
     VerifyOtp: { phoneNumber: string };
-    Home: undefined;
+    Home: any;
+    Dashboard: undefined;
+    Doctors: undefined;
 };

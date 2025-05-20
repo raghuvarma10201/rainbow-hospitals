@@ -1,15 +1,27 @@
-// MobileNumberScreen.tsx
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Formik } from 'formik';
 import React from 'react';
-import { ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+  Image,
+  ImageBackground,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import * as Yup from 'yup';
 import { RootStackParamList } from '../../navigation/types';
 import { loginWithMobile } from '../../services/authService';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
-const login: React.FC<Props> = ({ navigation }) => {
+const Login: React.FC<Props> = ({ navigation }) => {
   const mobileSchema = Yup.object().shape({
     mobile: Yup.string()
       .matches(/^[6-9]\d{9}$/, 'Enter a valid 10-digit mobile number')
@@ -17,15 +29,9 @@ const login: React.FC<Props> = ({ navigation }) => {
   });
 
   const handleSubmit = async (values: { mobile: string }) => {
-    console.log('Submitted mobile:', values.mobile);
-    // handle navigation or API call here
     try {
-      const payload = {
-        number: values.mobile
-      }
-      const response = await loginWithMobile(payload); // ✅ You're using it
-      console.log('Login success:', response);
-      if(response.status == 200){
+      const response = await loginWithMobile({ number: values.mobile });
+      if (response.status === 200) {
         navigation.navigate('VerifyOtp', { phoneNumber: values.mobile });
       }
     } catch (error) {
@@ -34,73 +40,93 @@ const login: React.FC<Props> = ({ navigation }) => {
   };
 
   return (
-    <ImageBackground
-      source={require('../../assets/images/background.png')} // Replace with actual image
-      style={styles.background}
-      resizeMode="cover"
-
+    <KeyboardAvoidingView
+      style={styles.flex}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.OS === 'android' ? -80 : 0} // optional
     >
-      <View style={styles.overlay}>
-        <Text style={styles.logoText}>BirthRight</Text>
-        <Text style={styles.subText}>BY RAINBOW HOSPITALS</Text>
-        <Text style={styles.tagline}>Your Right to a Safe Delivery</Text>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ImageBackground
+          source={require('../../assets/images/background.png')}
+          style={styles.background}
+          resizeMode="cover"
+        >
+          <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
+            <View style={styles.overlay}>
+              <View style={styles.logo}>
+                <Image source={require('../../assets/images/birthright-logo.png')} />
+              </View>
+              <View style={styles.titleHeader}>
+                <Text style={styles.title}>No. 1 Hospital in</Text>
+                <Text style={styles.subtitle}>Child and Women Care in India</Text>
+              </View>
 
-        <View style={styles.titleHeader}>
-          <Text style={styles.title}>No. 1 Hospital in</Text>
-          <Text style={styles.subtitle}>Child and Women Care in India</Text>
-        </View>
+              <View style={styles.formContainer}>
+                <Formik
+                  initialValues={{ mobile: '' }}
+                  validationSchema={mobileSchema}
+                  onSubmit={handleSubmit}
+                >
+                  {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
+                    <>
+                      <Text style={styles.inputLabel}>Lets get started! Enter your mobile number</Text>
+                      <View style={styles.inputWrapper}>
+                        <Text style={styles.prefix}>+91</Text>
+                        <TextInput
+                          style={styles.input}
+                          keyboardType="number-pad"
+                          maxLength={10}
+                          placeholder="Enter mobile number"
+                          onChangeText={handleChange('mobile')}
+                          onBlur={handleBlur('mobile')}
+                          value={values.mobile}
+                        />
+                      </View>
+                      {touched.mobile && errors.mobile && (
+                        <Text style={styles.errorText}>{errors.mobile}</Text>
+                      )}
 
-        <View style={styles.formContainer}>
-          <Formik
-            initialValues={{ mobile: '' }}
-            validationSchema={mobileSchema}
-            onSubmit={handleSubmit}
-          >
-            {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
-              <>
-                <Text style={styles.inputLabel}>Lets get started! Enter your mobile number</Text>
-                <View style={styles.inputWrapper}>
-                  <Text style={styles.prefix}>+91</Text>
-                  <TextInput
-                    style={styles.input}
-                    keyboardType="number-pad"
-                    maxLength={10}
-                    placeholder="Enter mobile number"
-                    onChangeText={handleChange('mobile')}
-                    onBlur={handleBlur('mobile')}
-                    value={values.mobile}
-                  />
-                </View>
-                {touched.mobile && errors.mobile && (
-                  <Text style={styles.errorText}>{errors.mobile}</Text>
-                )}
+                      <TouchableOpacity style={styles.signInLink}>
+                        <Text style={styles.linkText}>Trouble signing in?</Text>
+                      </TouchableOpacity>
 
-                <TouchableOpacity style={styles.signInLink}>
-                  <Text style={styles.linkText}>Trouble signing in?</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.button} onPress={handleSubmit as any}>
-                  <Text style={styles.buttonText}>Continue</Text>
-                </TouchableOpacity>
-              </>
-            )}
-          </Formik>
-        </View>
-      </View>
-    </ImageBackground>
+                      <TouchableOpacity style={styles.button} onPress={handleSubmit as any}>
+                        <Text style={styles.buttonText}>Continue</Text>
+                      </TouchableOpacity>
+                    </>
+                  )}
+                </Formik>
+              </View>
+            </View>
+          </ScrollView>
+        </ImageBackground>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
-  background: {
+  flex: {
     flex: 1,
-    overflow: 'hidden'
+  },
+  background: {
+    height: '100%',
+    flex: 1,
+  },
+  scrollContainer: {
+    flexGrow: 1,
   },
   overlay: {
     flex: 1,
     justifyContent: 'flex-end',
     padding: 20,
   },
+  logo: {
+    position: 'absolute',
+    top: 60,
+    left: 20,
+  },
+
   logoText: {
     position: 'absolute',
     top: 60,
@@ -126,8 +152,8 @@ const styles = StyleSheet.create({
   },
   titleHeader: {
     position: 'absolute',
-    bottom: '40%'
-
+    top: '45%',
+    left: '8%',
   },
   title: {
     fontSize: 16,
@@ -141,7 +167,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   formContainer: {
-    //backgroundColor: '#7A1EA1',
+    //backgroundColor : '#7E3A93',
     padding: 10,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
@@ -196,4 +222,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default login;
+export default Login;

@@ -4,7 +4,7 @@
     "slug": "rainbow-hospitals",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/br-icon.png",
     "scheme": "rainbowhospitals",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -13,10 +13,11 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/br-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.raghuvarma1025.rainbowhospitals"
     },
     "web": {
       "bundler": "metro",
@@ -28,7 +29,7 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "./assets/images/br-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
@@ -37,6 +38,13 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "ff9cb0eb-8556-414d-bf38-bce85d84312c"
+      }
+    },
+    "owner": "raghuvarma1025"
   }
 }
