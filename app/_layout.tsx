@@ -11,6 +11,7 @@ import VerifyOtp from './authentication/verify-otp';
 import Dashboard from './dashboard';
 import Doctors from './doctors';
 import Home from './home';
+import RegistrationScreen from './registration';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -30,6 +31,7 @@ export default function RootLayout() {
        <Stack.Navigator initialRouteName="Login">
         <Stack.Screen name="Login" component={login} options={{ headerShown: false }} />
         <Stack.Screen name="VerifyOtp" component={VerifyOtp} options={{ headerShown: false }} />
+        <Stack.Screen name="RegistrationScreen" component={RegistrationScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
          <Stack.Screen name="Doctors" component={Doctors} options={{ headerShown: false }} />
          <Stack.Screen name="Dashboard" component={Dashboard} options={{ headerShown: false }} />

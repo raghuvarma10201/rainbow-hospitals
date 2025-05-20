@@ -4,4 +4,5 @@ export type RootStackParamList = {
     Home: any;
     Dashboard: undefined;
     Doctors: undefined;
+    RegistrationScreen : { phoneNumber: string };
 };

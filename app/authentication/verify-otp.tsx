@@ -58,7 +58,7 @@ const VerifyOtp: React.FC<Props> = ({ navigation, route }) => {
           console.log('Verify success:', response);
           if(response.status === 200){
             await AsyncStorage.setItem('isLoggedIn', 'true');
-            navigation.navigate('Home', {  });
+            navigation.navigate('RegistrationScreen', { phoneNumber: phoneNumber });
           }
         } catch (error) {
           console.error('Verify failed:', error);
