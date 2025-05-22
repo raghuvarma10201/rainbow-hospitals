@@ -1,3 +1,4 @@
+import { Entypo } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -8,9 +9,10 @@ interface HeaderProps {
     showBackButton?: boolean;
     showLocation?: boolean;
     showIcons?: boolean;
+    showShareIcons?: boolean;
 }
 
-const Header: React.FC<HeaderProps> = ({ title, showBackButton = false, showLocation = false, showIcons = false }) => {
+const Header: React.FC<HeaderProps> = ({ title, showBackButton = false, showLocation = false, showIcons = false, showShareIcons = false }) => {
     const navigation = useNavigation();
 
     return (
@@ -44,6 +46,12 @@ const Header: React.FC<HeaderProps> = ({ title, showBackButton = false, showLoca
                     <View style={styles.right}>
                         <Icon name="notifications-outline" size={24} color="#fff" style={{ marginRight: 10 }} />
                         <Icon name="chatbox-ellipses-outline" size={24} color="#fff" />
+                    </View>
+                )}
+
+                {showShareIcons && (
+                    <View style={styles.right}>
+                        <Entypo name="share"  size={24} color="#fff" />
                     </View>
                 )}
             </View>

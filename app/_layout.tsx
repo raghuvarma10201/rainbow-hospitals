@@ -10,6 +10,7 @@ import login from './authentication/login';
 import VerifyOtp from './authentication/verify-otp';
 import Dashboard from './dashboard';
 import Doctors from './doctors';
+import DoctorsDetails from './doctorsDetail';
 import Home from './home';
 import RegistrationScreen from './registration';
 
@@ -28,13 +29,14 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-       <Stack.Navigator initialRouteName="Login">
+       <Stack.Navigator initialRouteName="DoctorsDetail">
         <Stack.Screen name="Login" component={login} options={{ headerShown: false }} />
         <Stack.Screen name="VerifyOtp" component={VerifyOtp} options={{ headerShown: false }} />
         <Stack.Screen name="RegistrationScreen" component={RegistrationScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
-         <Stack.Screen name="Doctors" component={Doctors} options={{ headerShown: false }} />
-         <Stack.Screen name="Dashboard" component={Dashboard} options={{ headerShown: false }} />
+        <Stack.Screen name="Doctors" component={Doctors} options={{ headerShown: false }} />
+        <Stack.Screen name="Dashboard" component={Dashboard} options={{ headerShown: false }} />
+        <Stack.Screen name="DoctorsDetail" component={DoctorsDetails} options={{ headerShown: false }} />
       </Stack.Navigator>
       <StatusBar style="auto" />
     </ThemeProvider>

@@ -1,5 +1,4 @@
 import BasicHeader from '@/components/BasicHeader';
-import { registerUser } from '@/services/authService';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -60,11 +59,14 @@ const RegistrationScreen: React.FC<Props> = ({ navigation, route }) => {
         Bloodgroup: values.bloodGroup,
         RHfactor: values.rhFactor
       }
-      const response = await registerUser(payload);
-      console.log('Verify success:', response);
-      if (response.status == 200) {
-        console.log('Registration successful', response);
-      }
+      console.log('Request Body', payload);
+      navigation.navigate('Home');
+      // const response = await registerUser(payload);
+      // console.log('Verify success:', response);
+      // if (response) {
+      //   console.log('Registration successful', response);
+      //    navigation.navigate('Home');
+      // }
     } catch (error) {
       console.error('Verify failed:', error);
     }
@@ -83,7 +85,7 @@ const RegistrationScreen: React.FC<Props> = ({ navigation, route }) => {
             email: '',
             mobile: phoneNumber || '',
             country: '',
-            dob: '',
+            dob: '2016-12-28T00:00:00.000Z',
             gender: '',
             address: '',
             pincode: '',
@@ -105,10 +107,9 @@ const RegistrationScreen: React.FC<Props> = ({ navigation, route }) => {
             touched,
             setFieldValue
           }) => {
-            // eslint-disable-next-line react-hooks/rules-of-hooks
             useEffect(() => {
               setFieldValue('agree', isEnabled);
-            }, [setFieldValue]);
+            }, [isEnabled]);
 
             return (
               <>
@@ -316,7 +317,7 @@ const styles = StyleSheet.create({
     borderColor: '#9C27B0',
     borderRadius: 25,
     marginVertical: 8,
-    paddingHorizontal: 8,
+    // paddingHorizontal: 8,
     padding: 12,
   },
   datePicker: {
