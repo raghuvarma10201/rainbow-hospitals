@@ -5,4 +5,5 @@ export type RootStackParamList = {
     Dashboard: undefined;
     Doctors: undefined;
     RegistrationScreen : { phoneNumber: string };
+    DoctorsDetail: undefined;
 };

@@ -32,12 +32,13 @@ const Dashboard: React.FC<Props> = ({ navigation, route }) => {
 
     type GridItemProps = {
         label: string;
-        image: string;
+        image: any;
+        onPress?: () => void;
     };
 
-    const GridItem: React.FC<GridItemProps> = ({ label, image }) => (
-        <TouchableOpacity style={styles.gridItem}>
-            <Image source={{ uri: image }} style={styles.gridImage} />
+    const GridItem: React.FC<GridItemProps> = ({ label, image, onPress  }) => (
+        <TouchableOpacity style={styles.gridItem} onPress={onPress}>
+            <Image source={ image } style={styles.gridImage} />
             <Text style={styles.gridLabel}>{label}</Text>
         </TouchableOpacity>
     );
@@ -69,7 +70,7 @@ const Dashboard: React.FC<Props> = ({ navigation, route }) => {
         <Text style={styles.sectionTitle}>{title}</Text>
     );
     const appointmentOptions = [
-        { label: 'Video Consultations', image: 'https://placehold.co/60?text=VC' },
+        { label: 'Video Consultations', image: 'https://placehold.co/60?text=PA'  },
         { label: 'Physical Appointment', image: 'https://placehold.co/60?text=PA' },
         { label: 'Book Vaccine', image: 'https://placehold.co/60?text=Vaccine' },
         { label: 'Book Scans', image: 'https://placehold.co/60?text=Scan' },
@@ -78,14 +79,14 @@ const Dashboard: React.FC<Props> = ({ navigation, route }) => {
     ];
 
     const specialities = [
-        { label: 'General Physician', image: 'https://placehold.co/60?text=GP' },
-        { label: 'Child Specialist', image: 'https://placehold.co/60?text=CS' },
-        { label: 'Women’s Health', image: 'https://placehold.co/60?text=WH' },
-        { label: 'Dental Care', image: 'https://placehold.co/60?text=Dental' },
-        { label: 'Eye Specialist', image: 'https://placehold.co/60?text=Eye' },
-        { label: 'Skin & Hair', image: 'https://placehold.co/60?text=Skin' },
-        { label: 'Kidney Issues', image: 'https://placehold.co/60?text=Kidney' },
-        { label: 'More', image: 'https://placehold.co/60?text=More' },
+        { label: 'General Physician', image: require('../assets/images/General.svg') },
+        { label: 'Child Specialist', image: require('../assets/images/Child.svg') },
+        { label: 'Women’s Health', image: require('../assets/images/Women.svg') },
+        { label: 'Dental Care', image: require('../assets/images/Dental.svg') },
+        { label: 'Eye Specialist', image: require('../assets/images/Eye.svg') },
+        { label: 'Skin & Hair', image: require('../assets/images/Skin.svg')},
+        { label: 'Kidney Issues', image: require('../assets/images/Kidney.svg') },
+        // { label: 'More', image: require('../assets/images/General.svg') },
     ];
 
     const doctors = [
@@ -133,9 +134,16 @@ const Dashboard: React.FC<Props> = ({ navigation, route }) => {
                 {/* Appointment Options */}
                 <SectionTitle title="Book your appointment" />
                 <View style={styles.grid}>
-                    {appointmentOptions.map(opt => (
+                    {/* {appointmentOptions.map(opt => (
                         <GridItem key={opt.label} label={opt.label} image={opt.image} />
-                    ))}
+                    ))} */}
+                        <GridItem label='Video Consultations' image={require('../assets/images/Video.png')} onPress={goToDoctors}  />
+                        <GridItem label='Physical Appointment' image={require('../assets/images/Physical.png')} />
+                        <GridItem label='Book Vaccine' image={require('../assets/images/BookVaccine.png')} />
+                        <GridItem label='Book Scans' image={require('../assets/images/Scans.png')} />
+                        <GridItem label='Ultrasound Scans' image={require('../assets/images/altrasound.png')} />
+                        <GridItem label='Fetal Medicine' image={require('../assets/images/Fetal.png')} />
+
                 </View>
 
                 {/* Speciality Options */}

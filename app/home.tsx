@@ -2,6 +2,7 @@ import FooterBackground from '@/components/footerBackground';
 import Header from '@/components/header';
 import { ThemedView } from '@/components/ThemedView';
 import { getCategories } from '@/services/categoryService';
+import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import {
     FlatList,
@@ -14,6 +15,8 @@ import {
     TouchableOpacity,
     View
 } from 'react-native';
+import CommonLoader from '../components/CommonLoader';
+import useLoading from '../hooks/useLoading';
 
 interface Category {
     id: number;
@@ -21,9 +24,32 @@ interface Category {
     image: ImageSourcePropType;
 }
 
+   type GridItemProps = {
+        label: string;
+        image: any;
+    };
+
+    const GridItem: React.FC<GridItemProps> = ({ label, image }) => (
+        <TouchableOpacity >
+            <Image source={ image } />
+        </TouchableOpacity>
+    );
+
+// type RootStackParamList = {
+//     Doctors: undefined;
+//     // add other routes here if needed
+// };
 
 const Home = () => {
     const [categories, setCategories] = useState<Category[]>([]);
+    const { isLoading, startLoading, stopLoading } = useLoading();
+    const navigation = useNavigation<any>();
+
+    const imageList = [
+  require('../assets/images/newborn.jpg'),
+  require('../assets/images/gynaecology.jpg'),
+  require('../assets/images/fertility-care.png'),
+];
 
     useEffect(() => {
         console.log('Component mounted');
@@ -34,6 +60,10 @@ const Home = () => {
         };
     }, []);
 
+     const navigateToDoctors = () => {
+        navigation.navigate('Dashboard');
+    };
+
     const goToDashboard = async () => {
         // Trigger OTP call logic
         
@@ -41,7 +71,9 @@ const Home = () => {
 
     const fetchData = async () => {
         // Simulate API delay
+        startLoading();
         setTimeout(async () => {
+            stopLoading();
             try {
                 const response = await getCategories(); // ✅ You're using it
                 console.log('Verify success:', response.coes);
@@ -54,20 +86,17 @@ const Home = () => {
     };
 
     // ✅ Define renderItem as a function (not state)
-    const renderItem = ({ item }: { item: any }) => (
-        <TouchableOpacity style={styles.card} onPress={goToDashboard as any}>
+    const renderItem = ({ item, index }: { item: any, index: number }) => (
+        <TouchableOpacity style={styles.card}  onPress={() => navigateToDoctors()}>
             <Image
-                source={
-                    item.banner_mobile_image
-                        ? { uri: 'https://productioncms.rainbowhospitals.in/uploads/' + item.banner_mobile_image }
-                        : require('../assets/images/birthright-logo.png')
-                }
+                source={imageList[index] }
                 style={styles.cardImage} />
             <Text style={styles.cardText}>{item.name}</Text>
         </TouchableOpacity>
     );
 
     return (
+        
         <SafeAreaView style={styles.container}>
             <ThemedView />
             <Header title="" showBackButton showLocation showIcons />
@@ -89,9 +118,14 @@ const Home = () => {
             </ScrollView>
 
             <FooterBackground />
+ <CommonLoader isVisible={isLoading} />
+
         </SafeAreaView>
     );
+    
 };
+
+
 
 const styles = StyleSheet.create({
     scrollContainer: {
